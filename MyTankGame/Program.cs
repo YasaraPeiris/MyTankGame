@@ -218,6 +218,35 @@ namespace MyTankGame
             int coin_y = Int32.Parse(lpDetails[1].Split(',')[1]);
             int LT = Int32.Parse(lpDetails[2]);
         }
+
+        public void readServerMessage(string message)
+        {
+            if (message[0] == 'S')
+            {
+                Console.Write("JOIN THE GAME");
+                //getLocation(message);
+            } 
+            else if (message[0] == 'I')
+            {
+                Console.Write("Game init");
+                //getMapDetails(message);
+            } 
+            else if (message[0] == 'G')
+            {
+                Console.Write("moving and shooting");
+                //getGlobalUpdate(message);
+            }
+            else if (message[0] == 'C')
+            {
+                Console.Write("coins");
+                //getCoinsDetails(message);
+            }
+            else if (message[0] == 'L')
+            {
+                Console.Write("life packs");
+                //getLifePacksDetails(message);
+            }
+        }
         static void Main(string[] args)
         {
             Program newGame = new Program();
