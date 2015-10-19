@@ -11,7 +11,7 @@ namespace MyTankGame
     {
 
         int x = 0;
-        int y = 2;
+        int y = 0;
         int direction=0;
         int nextX = 0;
         int nextY = 0;
