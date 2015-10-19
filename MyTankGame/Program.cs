@@ -9,8 +9,9 @@ namespace MyTankGame
 {
     class Program
     {
+
         int x = 0;
-        int y = 0;
+        int y = 2;
         int direction=0;
         int nextX = 0;
         int nextY = 0;
