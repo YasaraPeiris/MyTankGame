@@ -12,11 +12,11 @@ namespace MyTankGame
 
         int x = 0;
         int y = 0;
-        int direction=0;
+        int direction = 0;
         int nextX = 0;
         int nextY = 0;
         string player = "";
-        string[,] gameGrid = new string[10,10];
+        string[,] gameGrid = new string[10, 10];
         int[,] damgesLevel = new int[10, 10];
         List<string> bricks = new List<string>();
         List<string> stones = new List<string>();
@@ -24,14 +24,14 @@ namespace MyTankGame
         public void getLocation(String l) // Go to the initial setup location.
         {
             string[] message = new string[5];
-            message=l.Split(':',',');
+            message = l.Split(':', ',');
             x = Int32.Parse(message[2]);
-            y = Int32.Parse(message[3]);  
-            direction = Int32.Parse(message[4]); 
+            y = Int32.Parse(message[3]);
+            direction = Int32.Parse(message[4]);
             player = message[1];
             Console.WriteLine("x: {0}", x);
             Console.WriteLine("y: {0}", y);
-                }
+        }
         public void getMapDetails(String m) //add received map data in to the game grid
         {
             string[] mapDetails = new string[5];
@@ -42,24 +42,25 @@ namespace MyTankGame
             string[] bricks_array = bricks.ToArray();
             string[] stones_array = stones.ToArray();
             string[] water_array = water.ToArray();
-            foreach (string s in bricks_array){
+            foreach (string s in bricks_array)
+            {
                 int q = Int32.Parse(s.Split(',')[0]);
                 int w = Int32.Parse(s.Split(',')[1]);
-                gameGrid[q,w] = "B";
+                gameGrid[q, w] = "B";
             }
             foreach (string s in stones_array)
             {
                 int q = Int32.Parse(s.Split(',')[0]);
                 int w = Int32.Parse(s.Split(',')[1]);
-                gameGrid[q,w] = "S";
+                gameGrid[q, w] = "S";
             }
             foreach (string s in water_array)
             {
                 int q = Int32.Parse(s.Split(',')[0]);
                 int w = Int32.Parse(s.Split(',')[1]);
-                gameGrid[q,w] = "W";
+                gameGrid[q, w] = "W";
             }
-            
+
         }
         public void displayGrid()
         {
@@ -67,9 +68,9 @@ namespace MyTankGame
             {
                 for (int j = 0; j < 10; j++)
                 {
-                    if (gameGrid[i,j] != null)
+                    if (gameGrid[i, j] != null)
                     {
-                        Console.Write(gameGrid[i,j]+" ");
+                        Console.Write(gameGrid[i, j] + " ");
                     }
                     else
                     {
@@ -80,82 +81,98 @@ namespace MyTankGame
             }
         }
         public void getOpponentsLocations() { }
-        public void move(string command){ // get the command and check the irection of the tank facing
+        public void move(string command)
+        { // get the command and check the irection of the tank facing
             int dir = -1;
-            if(command=="UP"){
-               dir=0;
-           }
-            else if(command=="DOWN"){
-                dir=1;
+            if (command == "UP")
+            {
+                dir = 0;
             }
-            else if(command=="RIGHT"){
-                dir=1;
+            else if (command == "DOWN")
+            {
+                dir = 1;
             }
-            else if(command=="LEFT"){
-                dir=1;
+            else if (command == "RIGHT")
+            {
+                dir = 1;
+            }
+            else if (command == "LEFT")
+            {
+                dir = 1;
             }
             rotate(dir);
-            if (gameGrid[nextX,nextY] == "") {
+            if (gameGrid[nextX, nextY] == "")
+            {
                 x = nextX;
                 y = nextY;
             }
-                   
+
         }
-        public void rotate(int dir){ // get the direction of the next command.
-            if(dir ==0){
-                nextY=y+1;
+        public void rotate(int dir)
+        { // get the direction of the next command.
+            if (dir == 0)
+            {
+                nextY = y + 1;
             }
-            else if(dir == 1){
-                nextX = x+1;
+            else if (dir == 1)
+            {
+                nextX = x + 1;
             }
-             else if(dir == 2){
-                nextY = y-1;
+            else if (dir == 2)
+            {
+                nextY = y - 1;
             }
-             else if(dir == 3){
-                nextX = x-1;
+            else if (dir == 3)
+            {
+                nextX = x - 1;
             }
         }
         public void getGlobalUpdate(string updatedValues) // once per second server will broadcast all the details about what happend in the gamegrid.
         {
             List<string> updatedGrid = new List<string>();
             updatedGrid.AddRange(updatedValues.Split(':'));
-            int numberOfPlayers = updatedGrid.Count-2;
-            if(numberOfPlayers>0){
-                    Hashtable playerOne = new Hashtable();
+            int numberOfPlayers = updatedGrid.Count - 2;
+            if (numberOfPlayers > 0)
+            {
+                Hashtable playerOne = new Hashtable();
                 List<string> list1 = new List<string>();
                 list1.AddRange(updatedGrid[1].Split(';'));
-                createHashmaps(list1,playerOne);
-                    
+                createHashmaps(list1, playerOne);
+
             }
-            if(numberOfPlayers>1){
-                    Hashtable playerTwo = new Hashtable();
-                    List<string> list2 = new List<string>();
+            if (numberOfPlayers > 1)
+            {
+                Hashtable playerTwo = new Hashtable();
+                List<string> list2 = new List<string>();
                 list2.AddRange(updatedGrid[2].Split(';'));
-                createHashmaps(list2,playerTwo);
+                createHashmaps(list2, playerTwo);
             }
-            if(numberOfPlayers>2){
-                    Hashtable playerThree = new Hashtable();
-                    List<string> list3 = new List<string>();
+            if (numberOfPlayers > 2)
+            {
+                Hashtable playerThree = new Hashtable();
+                List<string> list3 = new List<string>();
                 list3.AddRange(updatedGrid[3].Split(';'));
-                createHashmaps(list3,playerThree);
+                createHashmaps(list3, playerThree);
             }
-            if(numberOfPlayers>3){
-                    Hashtable playerFour = new Hashtable();
-                    List<string> list4 = new List<string>();
+            if (numberOfPlayers > 3)
+            {
+                Hashtable playerFour = new Hashtable();
+                List<string> list4 = new List<string>();
                 list4.AddRange(updatedGrid[4].Split(';'));
-                createHashmaps(list4,playerFour);
+                createHashmaps(list4, playerFour);
             }
             if (numberOfPlayers > 4)
             {
-                    Hashtable playerFive = new Hashtable();
-                    List<string> list5 = new List<string>();
-                    list5.AddRange(updatedGrid[5].Split(';'));
-                    createHashmaps(list5, playerFive);
+                Hashtable playerFive = new Hashtable();
+                List<string> list5 = new List<string>();
+                list5.AddRange(updatedGrid[5].Split(';'));
+                createHashmaps(list5, playerFive);
             }
             shoot(updatedGrid[6]);
         }
-        public void createHashmaps(List<string> s,Hashtable name){
-         
+        public void createHashmaps(List<string> s, Hashtable name)
+        {
+
             name["playerLocation"] = s[1].Split(';')[1];
             name["Direction"] = s[1].Split(';')[1];
             name["whethershot"] = s[1].Split(';')[1];
@@ -166,7 +183,7 @@ namespace MyTankGame
 
 
 
-    }
+        }
         public void shoot(string command)
         {
             List<string> damages = new List<string>();
@@ -178,12 +195,29 @@ namespace MyTankGame
                 int c = Int32.Parse(s.Split(';')[0]);
                 int d = Int32.Parse(s.Split(';')[1]);
                 damgesLevel[c, d] = Int32.Parse(s.Split(';')[2]);
-                
+
             }
-            
+
 
         }
 
+        public void getCoinsDetails(string coinmessage)
+        {
+            string[] coinDetails = new string[4];
+            coinDetails = coinmessage.Split(':');
+            int coin_x = Int32.Parse(coinDetails[1].Split(',')[0]);
+            int coin_y = Int32.Parse(coinDetails[1].Split(',')[1]);
+            int LT = Int32.Parse(coinDetails[2]);
+            int val = Int32.Parse(coinDetails[3]);
+        }
+        public void getLifePacksDetails(string lpmessage)
+        {
+            string[] lpDetails = new string[3];
+            lpDetails = lpmessage.Split(':');
+            int coin_x = Int32.Parse(lpDetails[1].Split(',')[0]);
+            int coin_y = Int32.Parse(lpDetails[1].Split(',')[1]);
+            int LT = Int32.Parse(lpDetails[2]);
+        }
         static void Main(string[] args)
         {
             Program newGame = new Program();
