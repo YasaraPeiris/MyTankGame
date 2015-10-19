@@ -43,7 +43,9 @@ namespace MyTankGame
             string[] water_array = water.ToArray();
             foreach (string s in bricks_array){
                 int q = Int32.Parse(s.Split(',')[0]);
+                Console.WriteLine(q);
                 int w = Int32.Parse(s.Split(',')[1]);
+                Console.WriteLine(w);
                 gameGrid[q][w] = "B";
             }
             foreach (string s in stones_array){
@@ -56,7 +58,18 @@ namespace MyTankGame
                 int w = Int32.Parse(s.Split(',')[1]);
                 gameGrid[q][w] = "W";
             }
- 
+            
+        }
+        public void displayGrid()
+        {
+            for (int i = 0; i < 10; i++)
+            {
+                for (int j = 0; j < 10; j++)
+                {
+                    Console.Write(gameGrid[i][j]);
+                }
+                Console.WriteLine("\n");
+            }
         }
         public void getOpponentsLocations() { }
         public void move(string command){ // get the command and check the irection of the tank facing
@@ -125,6 +138,8 @@ namespace MyTankGame
         {
             Program newGame = new Program();
             newGame.getLocation("S:P1:1,1:0");
+            newGame.getMapDetails("I:P1:2,3;4,3;3,4;5,6:5,3;2,8;3,8;5,8:8,3;0,9;0,3;1,0");
+            newGame.displayGrid();
             Console.ReadLine();
         }
     }
