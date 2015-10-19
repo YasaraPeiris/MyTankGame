@@ -1,0 +1,6 @@
+c:\users\hp\documents\visual studio 2013\Projects\MyTankGame\MyTankGame\bin\Debug\MyTankGame.exe.config
+c:\users\hp\documents\visual studio 2013\Projects\MyTankGame\MyTankGame\bin\Debug\MyTankGame.exe
+c:\users\hp\documents\visual studio 2013\Projects\MyTankGame\MyTankGame\bin\Debug\MyTankGame.pdb
+c:\users\hp\documents\visual studio 2013\Projects\MyTankGame\MyTankGame\obj\Debug\MyTankGame.csprojResolveAssemblyReference.cache
+c:\users\hp\documents\visual studio 2013\Projects\MyTankGame\MyTankGame\obj\Debug\MyTankGame.exe
+c:\users\hp\documents\visual studio 2013\Projects\MyTankGame\MyTankGame\obj\Debug\MyTankGame.pdb
