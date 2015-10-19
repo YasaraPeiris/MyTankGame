@@ -16,7 +16,7 @@ namespace MyTankGame
         int nextX = 0;
         int nextY = 0;
         string player = "";
-        string[][] gameGrid = new string[10][];
+        string[,] gameGrid = new string[10,10];
         List<string> bricks = new List<string>();
         List<string> stones = new List<string>();
         List<string> water = new List<string>();
@@ -43,20 +43,20 @@ namespace MyTankGame
             string[] water_array = water.ToArray();
             foreach (string s in bricks_array){
                 int q = Int32.Parse(s.Split(',')[0]);
-                Console.WriteLine(q);
                 int w = Int32.Parse(s.Split(',')[1]);
-                Console.WriteLine(w);
-                gameGrid[q][w] = "B";
+                gameGrid[q,w] = "B";
             }
-            foreach (string s in stones_array){
+            foreach (string s in stones_array)
+            {
                 int q = Int32.Parse(s.Split(',')[0]);
                 int w = Int32.Parse(s.Split(',')[1]);
-                gameGrid[q][w] = "S";
+                gameGrid[q,w] = "S";
             }
-            foreach (string s in water_array){
+            foreach (string s in water_array)
+            {
                 int q = Int32.Parse(s.Split(',')[0]);
                 int w = Int32.Parse(s.Split(',')[1]);
-                gameGrid[q][w] = "W";
+                gameGrid[q,w] = "W";
             }
             
         }
@@ -66,7 +66,14 @@ namespace MyTankGame
             {
                 for (int j = 0; j < 10; j++)
                 {
-                    Console.Write(gameGrid[i][j]);
+                    if (gameGrid[i,j] != null)
+                    {
+                        Console.Write(gameGrid[i,j]+" ");
+                    }
+                    else
+                    {
+                        Console.Write("- ");
+                    }
                 }
                 Console.WriteLine("\n");
             }
@@ -87,7 +94,7 @@ namespace MyTankGame
                 dir=1;
             }
             rotate(dir);
-            if (gameGrid[nextX][nextY] == "") {
+            if (gameGrid[nextX,nextY] == "") {
                 x = nextX;
                 y = nextY;
             }
