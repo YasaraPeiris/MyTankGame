@@ -10,3 +10,9 @@ C:\Users\Sachi\Desktop\MyTankGame\MyTankGame\obj\Debug\MyTankGame.pdb
 C:\Users\Sachi\Desktop\MyTankGame\MyTankGame\bin\Debug\MyTankGame.exe
 C:\Users\Sachi\Desktop\MyTankGame\MyTankGame\bin\Debug\MyTankGame.pdb
 C:\Users\Sachi\Desktop\MyTankGame\MyTankGame\obj\Debug\MyTankGame.csprojResolveAssemblyReference.cache
+C:\Users\HP\Desktop\MyTankGame\MyTankGame\bin\Debug\MyTankGame.exe.config
+C:\Users\HP\Desktop\MyTankGame\MyTankGame\obj\Debug\MyTankGame.exe
+C:\Users\HP\Desktop\MyTankGame\MyTankGame\obj\Debug\MyTankGame.pdb
+C:\Users\HP\Desktop\MyTankGame\MyTankGame\bin\Debug\MyTankGame.exe
+C:\Users\HP\Desktop\MyTankGame\MyTankGame\bin\Debug\MyTankGame.pdb
+C:\Users\HP\Desktop\MyTankGame\MyTankGame\obj\Debug\MyTankGame.csprojResolveAssemblyReference.cache

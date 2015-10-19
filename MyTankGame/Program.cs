@@ -17,6 +17,7 @@ namespace MyTankGame
         int nextY = 0;
         string player = "";
         string[,] gameGrid = new string[10,10];
+        int[,] damgesLevel = new int[10, 10];
         List<string> bricks = new List<string>();
         List<string> stones = new List<string>();
         List<string> water = new List<string>();
@@ -118,10 +119,40 @@ namespace MyTankGame
         {
             List<string> updatedGrid = new List<string>();
             updatedGrid.AddRange(updatedValues.Split(':'));
-            Hashtable playerOne = new Hashtable();
-           
-
-
+            int numberOfPlayers = updatedGrid.Count-2;
+            if(numberOfPlayers>0){
+                    Hashtable playerOne = new Hashtable();
+                List<string> list1 = new List<string>();
+                list1.AddRange(updatedGrid[1].Split(';'));
+                createHashmaps(list1,playerOne);
+                    
+            }
+            if(numberOfPlayers>1){
+                    Hashtable playerTwo = new Hashtable();
+                    List<string> list2 = new List<string>();
+                list2.AddRange(updatedGrid[2].Split(';'));
+                createHashmaps(list2,playerTwo);
+            }
+            if(numberOfPlayers>2){
+                    Hashtable playerThree = new Hashtable();
+                    List<string> list3 = new List<string>();
+                list3.AddRange(updatedGrid[3].Split(';'));
+                createHashmaps(list3,playerThree);
+            }
+            if(numberOfPlayers>3){
+                    Hashtable playerFour = new Hashtable();
+                    List<string> list4 = new List<string>();
+                list4.AddRange(updatedGrid[4].Split(';'));
+                createHashmaps(list4,playerFour);
+            }
+            if (numberOfPlayers > 4)
+            {
+                    Hashtable playerFive = new Hashtable();
+                    List<string> list5 = new List<string>();
+                    list5.AddRange(updatedGrid[5].Split(';'));
+                    createHashmaps(list5, playerFive);
+            }
+            shoot(updatedGrid[6]);
         }
         public void createHashmaps(List<string> s,Hashtable name){
          
@@ -138,6 +169,18 @@ namespace MyTankGame
     }
         public void shoot(string command)
         {
+            List<string> damages = new List<string>();
+            damages.AddRange(command.Split(';'));
+
+
+            foreach (string s in damages)
+            {
+                int c = Int32.Parse(s.Split(';')[0]);
+                int d = Int32.Parse(s.Split(';')[1]);
+                damgesLevel[c, d] = Int32.Parse(s.Split(';')[2]);
+                
+            }
+            
 
         }
 
