@@ -4,11 +4,12 @@ using System.Collections;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Threading;
 namespace MyTankGame
 {
     class Program
     {
+
 
         int x = 0;
         int y = 0;
@@ -21,6 +22,7 @@ namespace MyTankGame
         List<string> bricks = new List<string>();
         List<string> stones = new List<string>();
         List<string> water = new List<string>();
+       
         public void getLocation(String l) // Go to the initial setup location.
         {
             string[] message = new string[5];
@@ -62,6 +64,7 @@ namespace MyTankGame
             }
 
         }
+     
         public void displayGrid()
         {
             for (int i = 0; i < 10; i++)
@@ -247,9 +250,25 @@ namespace MyTankGame
                 //getLifePacksDetails(message);
             }
         }
+        public void WorkThreadFunction(Class1 communicator)
+        {
+            try
+            {
+               
+                communicator.ReceiveData();
+            }
+            catch (Exception ex)
+            {
+                // log errors
+            }
+        }
         static void Main(string[] args)
         {
             Program newGame = new Program();
+            Class1 communicator = new Class1(newGame);
+            communicator.SendData();
+            communicator.startRecieve();
+
             newGame.getLocation("S:P1:1,1:0");
             newGame.getMapDetails("I:P1:2,3;4,3;3,4;5,6:5,3;2,8;3,8;5,8:8,3;0,9;0,3;1,0");
             newGame.displayGrid();
