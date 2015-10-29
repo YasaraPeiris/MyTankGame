@@ -25,10 +25,11 @@ namespace MyTankGame
         {
             GameGrid grid = new GameGrid();
             Client communicator = new Client(grid);
-            
-            communicator.startSend(); 
-            communicator.startRecieve();
             communicator.SendData();
+            communicator.startRecieve();
+            communicator.SendCommands(); 
+            
+            
             
 
             

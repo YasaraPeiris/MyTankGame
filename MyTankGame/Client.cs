@@ -84,6 +84,9 @@ namespace MyTankGame
                         }
 
                         reply = Encoding.UTF8.GetString(inputStr.ToArray());
+
+
+
                         this.serverStream.Close();
                         string ip = s.Substring(0, s.IndexOf(":"));
                         int port = 100;
@@ -160,6 +163,61 @@ namespace MyTankGame
 
         public void SendCommands()
         {
+            Object t = Console.ReadKey(true).Key;
+            string msg = "";
+            while (grid.mytank.status)
+            {
+                if (t.Equals(ConsoleKey.UpArrow))
+                {
+                    msg = "UP#";
+                }
+                else if (t.Equals(ConsoleKey.DownArrow))
+                {
+                    msg = "DOWN#";
+                }
+                else if (t.Equals(ConsoleKey.LeftArrow))
+                {
+                    msg = "LEFT#";
+                }
+                else if (t.Equals(ConsoleKey.RightArrow))
+                {
+                    msg = "RIGHT#";
+                }
+                else
+                {
+                    msg = "wrong";
+                    grid.mytank.status = false;
+                }
+            }
+            {
+                try
+                {
+                    this.client = new TcpClient();
+                    this.client.Connect("127.0.0.1", 6000);
+
+                    if (this.client.Connected)
+                    {
+                        //To write to the socket
+                        NetworkStream clientStream = client.GetStream();
+                        BinaryWriter writer = new BinaryWriter(clientStream);
+                        //Create objects for writing across stream
+                        writer = new BinaryWriter(clientStream);
+                        Byte[] tempStr = Encoding.ASCII.GetBytes(msg);
+
+                        //writing to the port                
+                        writer.Write(tempStr);
+                        writer.Close();
+                        clientStream.Close();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e);
+                }
+            }
+        }
+        public void SendCommands2()
+        {
             Console.WriteLine("inside sendcommands");
             //DataObject dataObj = (DataObject)stateInfo;
             //Opening the connection
@@ -173,7 +231,10 @@ namespace MyTankGame
                 {
                     Console.WriteLine("inside if");
                     //To write to the socket
-                    this.clientStream = client.GetStream();
+                    NetworkStream stream = client.GetStream();
+
+                    //Create objects for writing across stream
+                    this.writer = new BinaryWriter(clientStream);
 
                     //parse user inputs
                     string msg = "";
@@ -205,16 +266,15 @@ namespace MyTankGame
                         }
                         Console.WriteLine(msg);
                         //Create objects for writing across stream
-                        this.writer = new BinaryWriter(clientStream);
                         Byte[] tempStr = Encoding.ASCII.GetBytes(msg);
 
                         //writing to the port                
                         this.writer.Write(tempStr);
-                        this.writer.Close();
-                       
+
+
                     }
-                    //this.writer.Close();
-                    this.clientStream.Close();
+                    this.writer.Close();
+                    stream.Close();
 
 
                 }
