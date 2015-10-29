@@ -8,27 +8,44 @@ using System.Threading;
 
 namespace MyTankGame
 {
-    class Tank
+    class Tank : GameEntity
     {
-        int x = 0;
-        int y = 0;
-        int direction = 0;
-        int nextX = 0;
-        int nextY = 0;
-        string player = "";
-        int health = 0;
 
+        int direction;
+        int nextX;
+        int nextY;
+        int health;
+        public bool status;
         GameGrid grid;//the game grid this tank belongs to
+
+        public Tank()
+            : base()
+        {
+            direction = 0;
+            nextX = 0;
+            nextY = 0;
+            health = 0;
+            status = true;
+        }
+        public void setGrid(GameGrid g)
+        {
+            this.grid = g;
+        }
         public void setLocation(String l) // Go to the initial setup location.
         {
+            l = l.Remove(l.Length - 2); //remove trailing # and ?
+
             string[] message = new string[5];
-            message = l.Split(':', ',');
+            message = l.Split(':', ';',',');
             x = Int32.Parse(message[2]);
             y = Int32.Parse(message[3]);
             direction = Int32.Parse(message[4]);
-            player = message[1];
-            Console.WriteLine("x: {0}", x);
-            Console.WriteLine("y: {0}", y);
+            name = message[1];
+            grid.gameGrid[x, y] = this;
+            //Console.WriteLine("x: {0}", x);
+            //Console.WriteLine("y: {0}", y);
+            Console.WriteLine("HELLOOO");
+
         }
         public void move(string command)
         { // get the command and check the irection of the tank facing
@@ -81,6 +98,7 @@ namespace MyTankGame
 
     class MyTank : Tank
     {
+
         public void shoot()
         {
 
@@ -88,5 +106,6 @@ namespace MyTankGame
 
 
     }
-    
+
+
 }

@@ -10,15 +10,22 @@ namespace MyTankGame
 {
     class GameGrid
     {
-
-        public GameEntity[,] gameGrid = new GameEntity[10, 10];
+        public Tank mytank;
+        public GameEntity[,] gameGrid;
         int[,] damgesLevel = new int[10, 10];
         List<string> bricks = new List<string>();
         List<string> stones = new List<string>();
         List<string> water = new List<string>();
 
+        public GameGrid()
+        {
+            gameGrid = new GameEntity[10, 10];
+            mytank = new MyTank();
+            mytank.setGrid(this);
+        }
         public void setMapDetails(String m) //add received map data in to the game grid
         {
+            m = m.Remove(m.Length - 2);
             string[] mapDetails = new string[5];
             mapDetails = m.Split(':');
             bricks.AddRange(mapDetails[2].Split(';'));
@@ -60,15 +67,16 @@ namespace MyTankGame
                     }
                     else
                     {
-                        Console.Write("- ");
+                        Console.Write("-- ");
                     }
                 }
                 Console.WriteLine("\n");
             }
         }
 
-        public void getGlobalUpdate(string updatedValues) // once per second server will broadcast all the details about what happend in the gamegrid.
+        public void setGlobalUpdate(string updatedValues) // once per second server will broadcast all the details about what happend in the gamegrid.
         {
+            updatedValues = updatedValues.Remove(updatedValues.Length - 2);
             List<string> updatedGrid = new List<string>();
             updatedGrid.AddRange(updatedValues.Split(':'));
             int numberOfPlayers = updatedGrid.Count - 2;
@@ -153,21 +161,22 @@ namespace MyTankGame
 
         public void readServerMessage(string message)
         {
+           
             if (message[0] == 'S')
             {
-                Console.Write("\n \n \n \n JOINED THE GAME \n \n \n \n");
-
-                //getLocation(message);
+                Console.Write("i JOINED THE GAME \n \n \n \n");
+                Console.WriteLine("---" + message + "---");
+                mytank.setLocation(message);
             }
             else if (message[0] == 'I')
             {
                 Console.Write("\n \n \n \n Game initialised \n \n \n \n");
-                //this.setMapDetails(message);
+                setMapDetails(message);
             }
             else if (message[0] == 'G')
             {
                 Console.Write("\n \n \n \n GLOBAL UPDATE \n \n \n \n");
-                //getGlobalUpdate(message);
+                //setGlobalUpdate(message);
             }
             else if (message[0] == 'C')
             {
@@ -193,6 +202,12 @@ namespace MyTankGame
             x = xx;
             y = yy;
         }
+        public GameEntity()
+        {
+            x = 0;
+            y = 0;
+            name = "";
+        }
 
         public override string ToString()
         {
@@ -207,7 +222,7 @@ namespace MyTankGame
             : base(xx, yy)
         {
             health = 100;
-            name = "B";
+            name = "BB";
         }
         public void updateDamage()
         {
@@ -219,7 +234,7 @@ namespace MyTankGame
         public Stone(int xx, int yy)
             : base(xx, yy)
         {
-            name = "S";
+            name = "SS";
         }
     }
     class Water : GameEntity
@@ -227,7 +242,7 @@ namespace MyTankGame
         public Water(int xx, int yy)
             : base(xx, yy)
         {
-            name = "W";
+            name = "WW";
         }
     }
 
@@ -240,6 +255,7 @@ namespace MyTankGame
             x = xx;
             y = yy;
             lifetime = lt;
+            name = "LP";
         }
         public void updateRandom()
         {
@@ -257,6 +273,7 @@ namespace MyTankGame
             y = yy;
             lifetime = lt;
             value = val;
+            name = "CC";
         }
     }
 

@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace MyTankGame
 {
-        
+
     class Client
     {
         GameGrid grid = null;
@@ -26,21 +26,30 @@ namespace MyTankGame
 
         int serverPort = 6000;
         int clientPort = 7000;
-        String x =  Console.ReadLine();
-        Thread thread;
-       // private static Class1 comm = new Class1();
-       
-         public Client(GameGrid gr)
-        {
-            this.grid = gr;       
-        }
-      
-        public void startRecieve()
-         {
+        String x = Console.ReadLine();
+        Thread receive_thread;
+        Thread send_thread;
+        // private static Class1 comm = new Class1();
 
-             thread = new Thread(new ThreadStart(ReceiveData));
-             thread.Start();
-         }
+        public Client(GameGrid gr)
+        {
+            this.grid = gr;
+        }
+
+        public void startRecieve()
+        {
+
+            receive_thread = new Thread(new ThreadStart(ReceiveData));
+            receive_thread.Start();
+        }
+        public void startSend()
+        {
+
+            send_thread = new Thread(new ThreadStart(SendCommands));
+            send_thread.Start();
+        }
+
+
         public void ReceiveData()
         {
 
@@ -49,11 +58,11 @@ namespace MyTankGame
             try
             {
                 //Creating listening Socket
-                this.listener = new TcpListener(IPAddress.Parse("127.0.0.1"), 7000);
+                this.listener = new TcpListener(IPAddress.Parse("127.0.0.1"), clientPort);
                 //Starts listening
                 this.listener.Start();
                 //Establish connection upon client request
-          //      DataObject dataObj;
+                //      DataObject dataObj;
                 while (true)
                 {
                     //connection is connected socket
@@ -77,7 +86,7 @@ namespace MyTankGame
                         reply = Encoding.UTF8.GetString(inputStr.ToArray());
                         this.serverStream.Close();
                         string ip = s.Substring(0, s.IndexOf(":"));
-                        int port =100;
+                        int port = 100;
                         try
                         {
                             string ss = reply.Substring(0, reply.IndexOf(";"));
@@ -85,13 +94,13 @@ namespace MyTankGame
                         }
                         catch (Exception)
                         {
-                            port =100;
+                            port = 100;
                         }
                         Console.WriteLine(ip + ": " + reply);
-                     //   dataObj = new DataObject(reply.Substring(0, reply.Length - 1), ip, port);
+                        //   dataObj = new DataObject(reply.Substring(0, reply.Length - 1), ip, port);
                         //String message = reply.Substring(0, reply.Length - 1);
-                       // ThreadPool.QueueUserWorkItem(new WaitCallback(Program.Resolve),message);
-                        grid.readServerMessage(reply);                        
+                        // ThreadPool.QueueUserWorkItem(new WaitCallback(Program.Resolve),message);
+                        grid.readServerMessage(reply);
                     }
                 }
             }
@@ -120,24 +129,24 @@ namespace MyTankGame
             {
 
 
-                this.client.Connect(IPAddress.Parse("127.0.0.1"), 6000);
+                this.client.Connect(IPAddress.Parse("127.0.0.1"), serverPort);
 
-                    if (this.client.Connected)
-                    {
-                        //To write to the socket
-                        this.clientStream = client.GetStream();
+                if (this.client.Connected)
+                {
+                    //To write to the socket
+                    this.clientStream = client.GetStream();
 
-                        //Create objects for writing across stream
-                        this.writer = new BinaryWriter(clientStream);
-                        Byte[] tempStr = Encoding.ASCII.GetBytes(x);
+                    //Create objects for writing across stream
+                    this.writer = new BinaryWriter(clientStream);
+                    Byte[] tempStr = Encoding.ASCII.GetBytes(x);
 
-                        //writing to the port                
-                        this.writer.Write(tempStr);
-                        Console.WriteLine("\t Data: " + x + " is written to " + IPAddress.Parse("127.0.0.1") + " on " + 6000);
-                        this.writer.Close();
-                        this.clientStream.Close();
-                    }
-                
+                    //writing to the port                
+                    this.writer.Write(tempStr);
+                    Console.WriteLine("\t Data: " + x + " is written to " + IPAddress.Parse("127.0.0.1") + " on " + 6000);
+                    this.writer.Close();
+                    this.clientStream.Close();
+                }
+
             }
             catch (Exception e)
             {
@@ -148,5 +157,78 @@ namespace MyTankGame
                 this.client.Close();
             }
         }
+
+        public void SendCommands()
+        {
+            Console.WriteLine("inside sendcommands");
+            //DataObject dataObj = (DataObject)stateInfo;
+            //Opening the connection
+            this.client = new TcpClient();
+
+            try
+            {
+                this.client.Connect(IPAddress.Parse("127.0.0.1"), serverPort);
+
+                if (this.client.Connected)
+                {
+                    Console.WriteLine("inside if");
+                    //To write to the socket
+                    this.clientStream = client.GetStream();
+
+                    //parse user inputs
+                    string msg = "";
+                    while (grid.mytank.status)
+                    {
+                        Console.WriteLine("inside while status");
+                        Object t = Console.ReadKey(true).Key;
+
+                        if (t.Equals(ConsoleKey.UpArrow))
+                        {
+                            msg = "UP#";
+                        }
+                        else if (t.Equals(ConsoleKey.DownArrow))
+                        {
+                            msg = "DOWN#";
+                        }
+                        else if (t.Equals(ConsoleKey.LeftArrow))
+                        {
+                            msg = "LEFT#";
+                        }
+                        else if (t.Equals(ConsoleKey.RightArrow))
+                        {
+                            msg = "RIGHT#";
+                        }
+                        else
+                        {
+                            msg = "wrong";
+                            grid.mytank.status = false;
+                        }
+                        Console.WriteLine(msg);
+                        //Create objects for writing across stream
+                        this.writer = new BinaryWriter(clientStream);
+                        Byte[] tempStr = Encoding.ASCII.GetBytes(msg);
+
+                        //writing to the port                
+                        this.writer.Write(tempStr);
+                        this.writer.Close();
+                       
+                    }
+                    //this.writer.Close();
+                    this.clientStream.Close();
+
+
+                }
+
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Communication (WRITING) to " + IPAddress.Parse("127.0.0.1") + " on " + 6000 + "Failed! \n " + e.Message);
+            }
+            finally
+            {
+                this.client.Close();
+            }
+        }
+
     }
 }

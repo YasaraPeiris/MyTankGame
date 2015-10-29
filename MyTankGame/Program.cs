@@ -24,21 +24,18 @@ namespace MyTankGame
         static void Main(string[] args)
         {
             GameGrid grid = new GameGrid();
-            Tank mytank = new Tank();
             Client communicator = new Client(grid);
-            communicator.SendData();
+            
+            communicator.startSend(); 
             communicator.startRecieve();
+            communicator.SendData();
+            
 
-            //Brick b = new Brick(3, 2);
-            //Stone s = new Stone(5, 3);
-            //Water w = new Water(8, 3);
-            //Coin c = new Coin(3, 4, 5, 6);
-            //LifePack l = new LifePack(7, 5, 4);
-            //grid.gameGrid[3, 2] = b;
-            //grid.gameGrid[5, 3] = s;
-            //grid.gameGrid[8, 3] = w;
+            
+            //grid.setMapDetails("I:P1: 0,0;2,3;3,4 : 4,5;5,6;6,7:  1,2;2,3;3,4 #?");
+            //grid.mytank.setLocation("S:P1:1,0:0#?");
             //grid.displayGrid();
-            Console.ReadLine();
+            //Console.ReadLine();
         }
     }
 }
