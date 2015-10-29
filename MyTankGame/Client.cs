@@ -1,18 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
+using System.Windows.Forms;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.IO;
 using System.Threading;
-using System.Threading.Tasks;
-
+using System.Drawing;
+using System.Collections;
 
 namespace MyTankGame
 {
-
-    class Client
+    public partial class Client : Form
     {
         GameGrid grid = null;
 
@@ -26,30 +25,31 @@ namespace MyTankGame
 
         int serverPort = 6000;
         int clientPort = 7000;
-        String x = Console.ReadLine();
         Thread receive_thread;
-        Thread send_thread;
-        // private static Class1 comm = new Class1();
-
-        public Client(GameGrid gr)
+        public Client()
         {
-            this.grid = gr;
+            InitializeComponent();
+            grid = new GameGrid();
+        }
+
+        private void Join_btn_Click(object sender, EventArgs e)
+        {
+            SendData("JOIN#");
+            startRecieve();
+            Join_Btn.Enabled = false;
+        }
+
+        private void Send_btn_Click(object sender, EventArgs e)
+        {
+            String command = textBox1.Text;
+            SendData(command);
         }
 
         public void startRecieve()
         {
-
             receive_thread = new Thread(new ThreadStart(ReceiveData));
             receive_thread.Start();
         }
-        public void startSend()
-        {
-
-            send_thread = new Thread(new ThreadStart(SendCommands));
-            send_thread.Start();
-        }
-
-
         public void ReceiveData()
         {
 
@@ -99,7 +99,8 @@ namespace MyTankGame
                         {
                             port = 100;
                         }
-                        Console.WriteLine(ip + ": " + reply);
+                        
+                        //Console.WriteLine(ip + ": " + reply);
                         //   dataObj = new DataObject(reply.Substring(0, reply.Length - 1), ip, port);
                         //String message = reply.Substring(0, reply.Length - 1);
                         // ThreadPool.QueueUserWorkItem(new WaitCallback(Program.Resolve),message);
@@ -122,7 +123,7 @@ namespace MyTankGame
             }
         }
 
-        public void SendData()
+        public void SendData(string x)
         {
             //DataObject dataObj = (DataObject)stateInfo;
             //Opening the connection
@@ -145,7 +146,7 @@ namespace MyTankGame
 
                     //writing to the port                
                     this.writer.Write(tempStr);
-                    Console.WriteLine("\t Data: " + x + " is written to " + IPAddress.Parse("127.0.0.1") + " on " + 6000);
+                    Console.WriteLine("\t Data: " + x + " is written to " + IPAddress.Parse("127.0.0.1") + " on " + serverPort);
                     this.writer.Close();
                     this.clientStream.Close();
                 }
@@ -153,7 +154,7 @@ namespace MyTankGame
             }
             catch (Exception e)
             {
-                Console.WriteLine("Communication (WRITING) to " + IPAddress.Parse("127.0.0.1") + " on " + 6000 + "Failed! \n " + e.Message);
+                Console.WriteLine("Communication (WRITING) to " + IPAddress.Parse("127.0.0.1") + " on " + serverPort + "Failed! \n " + e.Message);
             }
             finally
             {
@@ -161,134 +162,34 @@ namespace MyTankGame
             }
         }
 
-        public void SendCommands()
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            Object t = Console.ReadKey(true).Key;
-            string msg = "";
-            while (grid.mytank.status)
+            if (keyData == Keys.Left)
             {
-                if (t.Equals(ConsoleKey.UpArrow))
-                {
-                    msg = "UP#";
-                }
-                else if (t.Equals(ConsoleKey.DownArrow))
-                {
-                    msg = "DOWN#";
-                }
-                else if (t.Equals(ConsoleKey.LeftArrow))
-                {
-                    msg = "LEFT#";
-                }
-                else if (t.Equals(ConsoleKey.RightArrow))
-                {
-                    msg = "RIGHT#";
-                }
-                else
-                {
-                    msg = "wrong";
-                    grid.mytank.status = false;
-                }
+                SendData("LEFT#");
+                return true;
             }
+            else if (keyData == Keys.Right)
             {
-                try
-                {
-                    this.client = new TcpClient();
-                    this.client.Connect("127.0.0.1", 6000);
-
-                    if (this.client.Connected)
-                    {
-                        //To write to the socket
-                        NetworkStream clientStream = client.GetStream();
-                        BinaryWriter writer = new BinaryWriter(clientStream);
-                        //Create objects for writing across stream
-                        writer = new BinaryWriter(clientStream);
-                        Byte[] tempStr = Encoding.ASCII.GetBytes(msg);
-
-                        //writing to the port                
-                        writer.Write(tempStr);
-                        writer.Close();
-                        clientStream.Close();
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e);
-                }
+                SendData("RIGHT#");
+                return true;
             }
+            else if (keyData == Keys.Up)
+            {
+                SendData("UP#");
+                return true;
+            }
+            else if (keyData == Keys.Down)
+            {
+                SendData("DOWN#");
+                return true;
+            }
+            else if (keyData == Keys.Space)
+            {
+                SendData("SHOOT#");
+                return true;
+            }
+            return base.ProcessCmdKey(ref msg, keyData);
         }
-        public void SendCommands2()
-        {
-            Console.WriteLine("inside sendcommands");
-            //DataObject dataObj = (DataObject)stateInfo;
-            //Opening the connection
-            this.client = new TcpClient();
-
-            try
-            {
-                this.client.Connect(IPAddress.Parse("127.0.0.1"), serverPort);
-
-                if (this.client.Connected)
-                {
-                    Console.WriteLine("inside if");
-                    //To write to the socket
-                    NetworkStream stream = client.GetStream();
-
-                    //Create objects for writing across stream
-                    this.writer = new BinaryWriter(clientStream);
-
-                    //parse user inputs
-                    string msg = "";
-                    while (grid.mytank.status)
-                    {
-                        Console.WriteLine("inside while status");
-                        Object t = Console.ReadKey(true).Key;
-
-                        if (t.Equals(ConsoleKey.UpArrow))
-                        {
-                            msg = "UP#";
-                        }
-                        else if (t.Equals(ConsoleKey.DownArrow))
-                        {
-                            msg = "DOWN#";
-                        }
-                        else if (t.Equals(ConsoleKey.LeftArrow))
-                        {
-                            msg = "LEFT#";
-                        }
-                        else if (t.Equals(ConsoleKey.RightArrow))
-                        {
-                            msg = "RIGHT#";
-                        }
-                        else
-                        {
-                            msg = "wrong";
-                            grid.mytank.status = false;
-                        }
-                        Console.WriteLine(msg);
-                        //Create objects for writing across stream
-                        Byte[] tempStr = Encoding.ASCII.GetBytes(msg);
-
-                        //writing to the port                
-                        this.writer.Write(tempStr);
-
-
-                    }
-                    this.writer.Close();
-                    stream.Close();
-
-
-                }
-
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine("Communication (WRITING) to " + IPAddress.Parse("127.0.0.1") + " on " + 6000 + "Failed! \n " + e.Message);
-            }
-            finally
-            {
-                this.client.Close();
-            }
-        }
-
     }
 }
