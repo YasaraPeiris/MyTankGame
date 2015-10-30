@@ -19,9 +19,10 @@
             }
             base.Dispose(disposing);
         }
+      
 
         #region Windows Form Designer generated code
-
+        
         /// <summary>
         /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
@@ -31,6 +32,7 @@
             this.Join_Btn = new System.Windows.Forms.Button();
             this.Send_btn = new System.Windows.Forms.Button();
             this.textBox1 = new System.Windows.Forms.TextBox();
+            this.textBox2 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // Join_Btn
@@ -67,16 +69,25 @@
             this.textBox1.TabIndex = 2;
             this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
             // 
-            // Client_2
+            // textBox2
+            // 
+            this.textBox2.Location = new System.Drawing.Point(416, 82);
+            this.textBox2.Multiline = true;
+            this.textBox2.Name = "textBox2";
+            this.textBox2.Size = new System.Drawing.Size(326, 206);
+            this.textBox2.TabIndex = 3;
+            // 
+            // Client
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.HighlightText;
-            this.ClientSize = new System.Drawing.Size(408, 338);
+            this.ClientSize = new System.Drawing.Size(783, 338);
+            this.Controls.Add(this.textBox2);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.Send_btn);
             this.Controls.Add(this.Join_Btn);
-            this.Name = "Client_2";
+            this.Name = "Client";
             this.Text = "Client_2";
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -88,5 +99,6 @@
         private System.Windows.Forms.Button Join_Btn;
         private System.Windows.Forms.Button Send_btn;
         private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox textBox2;
     }
 }

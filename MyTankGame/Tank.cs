@@ -17,7 +17,7 @@ namespace MyTankGame
         int health;
         public bool status;
         GameGrid grid;//the game grid this tank belongs to
-
+        String respond;
         public Tank()
             : base()
         {
@@ -26,6 +26,7 @@ namespace MyTankGame
             nextY = 0;
             health = 0;
             status = true;
+            respond="";
         }
         public void setGrid(GameGrid g)
         {
@@ -94,6 +95,64 @@ namespace MyTankGame
                 nextX = x - 1;
             }
         }
+        public String  respondCommands(String x)
+        {
+            x = x.Split('#')[0];
+            if (x == "OBSTACLE")
+            {
+                respond = "Obstacle found in moved direction";
+                Console.WriteLine("Obstacle found in moved direction");
+                return respond ;
+            }
+            else if(x=="CELL_OCCUPIED"){
+                respond = "Tried to move to a occupied cell";
+                Console.WriteLine("Tried to move to a occupied cell");
+                return respond ;
+            }
+               else if(x=="DEAD"){
+                   respond = "Player dead";
+                   Console.WriteLine("Player dead");
+                   return respond ;
+            }
+            else if(x=="TOO_QUICK"){
+                respond = "Slow down movements";
+                Console.WriteLine("Slow down movements");
+                return respond ;
+            }
+            else if(x=="INVALID_CELL"){
+                respond = "Not a valid cell";
+                Console.WriteLine("Not a valid cell");
+                return respond ;
+            }
+               else if(x=="GAME_HAS_FINISHED"){
+                   respond = "Game end";
+                   Console.WriteLine("Game end");
+                   return respond ;
+            }
+            else if (x == "PITFALL")
+            {
+                respond = "Pitfall - Game end";
+                Console.WriteLine("Pitfall - Game end");
+                return respond;
+            }
+               else if(x=="GAME_NOT_STARTED_YET"){
+                   respond = "Wait!Game will start in few seconds ";
+                   Console.WriteLine("Wait!Game will start in few seconds ");
+                   return respond ;
+            }
+               else if(x=="NOT_A_VALID_CONTESTANT"){
+                   respond = "Only valid contestants are allowed";
+                   Console.WriteLine("Only valid contestants are allowed");
+                   return respond ;
+            }
+            else{
+                respond = "Not a valid respond";
+               // Console.WriteLine("Not a valid respond");
+                   return respond ;
+               
+               }
+        }
+        
     }
 
     class MyTank : Tank

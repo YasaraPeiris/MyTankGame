@@ -14,7 +14,7 @@ namespace MyTankGame
     public partial class Client : Form
     {
         GameGrid grid = null;
-
+        Tank myTank = new Tank();
         private NetworkStream clientStream; //Stream - outgoing
         private TcpClient client; //To talk back to the client
         private BinaryWriter writer; //To write to the clients
@@ -84,9 +84,7 @@ namespace MyTankGame
                         }
 
                         reply = Encoding.UTF8.GetString(inputStr.ToArray());
-
-
-
+                        myTank.respondCommands(reply);
                         this.serverStream.Close();
                         string ip = s.Substring(0, s.IndexOf(":"));
                         int port = 100;
@@ -105,6 +103,7 @@ namespace MyTankGame
                         //String message = reply.Substring(0, reply.Length - 1);
                         // ThreadPool.QueueUserWorkItem(new WaitCallback(Program.Resolve),message);
                         grid.readServerMessage(reply);
+                        
                     }
                 }
             }
@@ -148,6 +147,7 @@ namespace MyTankGame
                     this.writer.Write(tempStr);
                     Console.WriteLine("\t Data: " + x + " is written to " + IPAddress.Parse("127.0.0.1") + " on " + serverPort);
                     this.writer.Close();
+                   
                     this.clientStream.Close();
                 }
 

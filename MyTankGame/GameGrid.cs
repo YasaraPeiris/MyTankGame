@@ -76,7 +76,7 @@ namespace MyTankGame
 
         public void setGlobalUpdate(string updatedValues) // once per second server will broadcast all the details about what happend in the gamegrid.
         {
-            updatedValues = updatedValues.Remove(updatedValues.Length - 2);
+            updatedValues = updatedValues.Split('#')[0];
             List<string> updatedGrid = new List<string>();
             updatedGrid.AddRange(updatedValues.Split(':'));
             int numberOfPlayers = updatedGrid.Count - 2;
@@ -161,31 +161,75 @@ namespace MyTankGame
 
         public void readServerMessage(string message)
         {
-           
+            
+           string s= "";
             if (message[0] == 'S')
             {
-                Console.Write("i JOINED THE GAME \n \n \n \n");
-                Console.WriteLine("---" + message + "---");
+                Console.Write("Joined the game\n");
+                s = "Joined the game\n";
+                //Console.WriteLine("---" + message + "---");
                 mytank.setLocation(message);
             }
             else if (message[0] == 'I')
             {
-                Console.Write("\n \n \n \n Game initialised \n \n \n \n");
+                Console.Write("Game initialised\n");
+                s="Game initialised\n";
                 setMapDetails(message);
             }
             else if (message[0] == 'G')
             {
-                Console.Write("\n \n \n \n GLOBAL UPDATE \n \n \n \n");
+                Console.Write("Global update\n");
+                s = "Global update\n";
                 //setGlobalUpdate(message);
             }
             else if (message[0] == 'C')
             {
-                Console.Write("\n \n \n \n coins!! \n \n \n \n");
+                Console.Write("coins!!\n");
+                s = "coins\n";
                 //getCoinsDetails(message);
             }
             else if (message[0] == 'L')
             {
-                Console.Write("\n \n \n \n life packs!! \n \n \n \n");
+                Console.Write("life packs!! \n");
+                s = "life packs!";
+                //getLifePacksDetails(message);
+            }
+            this.displayGrid();
+            
+        }
+        public void readServerMesssage(string message)
+        {
+            string s = "";
+
+            if (message[0] == 'S')
+            {
+                Console.Write("\nJoined the game\n");
+                s = "Joined the game\n";
+                //Console.WriteLine("---" + message + "---");
+                mytank.setLocation(message);
+            }
+            else if (message[0] == 'I')
+            {
+                Console.Write("Game initialised\n");
+                s = "Game initialised\n";
+                setMapDetails(message);
+            }
+            else if (message[0] == 'G')
+            {
+                Console.Write("Global update\n");
+                s = "Global update\n";
+                setGlobalUpdate(message);
+            }
+            else if (message[0] == 'C')
+            {
+                Console.Write("coins!!\n");
+                s = "coins\n";
+                getCoinsDetails(message);
+            }
+            else if (message[0] == 'L')
+            {
+                Console.Write("life packs!! \n");
+                s = "life packs!";
                 //getLifePacksDetails(message);
             }
             this.displayGrid();
