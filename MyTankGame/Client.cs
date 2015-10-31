@@ -164,6 +164,7 @@ namespace MyTankGame
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
+            Console.WriteLine("check");
             if (keyData == Keys.Left)
             {
                 SendData("LEFT#");
