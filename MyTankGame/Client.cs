@@ -84,7 +84,7 @@ namespace MyTankGame
                         }
 
                         reply = Encoding.UTF8.GetString(inputStr.ToArray());
-                        myTank.respondCommands(reply);
+                        //myTank.respondCommands(reply);
                         this.serverStream.Close();
                         string ip = s.Substring(0, s.IndexOf(":"));
                         int port = 100;
@@ -97,13 +97,13 @@ namespace MyTankGame
                         {
                             port = 100;
                         }
-                        
+
                         //Console.WriteLine(ip + ": " + reply);
                         //   dataObj = new DataObject(reply.Substring(0, reply.Length - 1), ip, port);
                         //String message = reply.Substring(0, reply.Length - 1);
                         // ThreadPool.QueueUserWorkItem(new WaitCallback(Program.Resolve),message);
                         grid.readServerMessage(reply);
-                        
+
                     }
                 }
             }
@@ -147,7 +147,7 @@ namespace MyTankGame
                     this.writer.Write(tempStr);
                     Console.WriteLine("\t Data: " + x + " is written to " + IPAddress.Parse("127.0.0.1") + " on " + serverPort);
                     this.writer.Close();
-                   
+
                     this.clientStream.Close();
                 }
 
