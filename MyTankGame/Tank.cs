@@ -75,7 +75,7 @@ namespace MyTankGame
          //   Console.ReadLine();
             //Console.WriteLine("x: {0}", x);
             //Console.WriteLine("y: {0}", y);
-            Console.WriteLine("HELLOOO");
+            
 
         }
         public void globalUpdate(String updatedValues)
