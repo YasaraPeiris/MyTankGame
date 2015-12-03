@@ -21,6 +21,8 @@ namespace MyTankGame
         
         int x;
         int y;
+		
+		int u =0;
         
 
         public GameGrid()
